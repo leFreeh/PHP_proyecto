@@ -1,10 +1,16 @@
 <?php
+// Obtener la URL de conexión desde la variable de entorno
+$mysql_url = getenv('MYSQL_URL');
+
+// Parsear la URL para obtener los componentes de la conexión
+$parsed_url = parse_url($mysql_url);
+
 // Parámetros de conexión
-$host = 'containers-us-west-123.railway.app'; // Ejemplo de host (puede variar)
-$db = 'railway'; // Nombre de la base de datos (lo proporciona Railway)
-$user = 'root'; // Usuario de la base de datos
-$pass = 'tu-contraseña'; // Contraseña de la base de datos (la proporciona Railway)
-$port = 3306; // El puerto por defecto de MySQL
+$host = $parsed_url['host'];
+$port = $parsed_url['port'];
+$user = $parsed_url['user'];
+$pass = $parsed_url['pass'];
+$db = ltrim($parsed_url['path'], '/'); // Eliminamos la barra inicial del nombre de la base de datos
 
 // Crear la conexión
 $conexion = new mysqli($host, $user, $pass, $db, $port);
